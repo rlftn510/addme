@@ -37,6 +37,21 @@ module.exports = {
         options: vueLoaderConfig
       },
       {
+        test: /\.css$/,
+        use: [
+            'style-loader',
+            'css-loader'
+        ]
+    },
+    {
+        test: /\.scss$/,
+        use: [
+            'style-loader',
+            'css-loader',
+            'sass-loader'
+        ]
+    },
+      {
         test: /\.js$/,
         loader: 'babel-loader',
         include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
