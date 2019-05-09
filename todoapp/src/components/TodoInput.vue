@@ -18,7 +18,7 @@ export default {
     addTodo : function() {
       if (this.newTodoItem !== ''){
         // this.$emit('이벤트 이름', 인지1, 인자2....)
-        this.$emit('addTodoItem', this.newTodoItem)
+        this.$emit('addItem', this.newTodoItem)
         this.clearInput()
       }
     },
