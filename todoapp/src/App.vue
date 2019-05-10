@@ -29,6 +29,7 @@ export default {
       let obj = {completed : false, item: todoItem}
       localStorage.setItem(todoItem, JSON.stringify(obj))
       this.todoItems.push(obj)
+      console.log(todoItem)
     },
     removeOneItem(todoItem, index){
       localStorage.removeItem(todoItem.item)
