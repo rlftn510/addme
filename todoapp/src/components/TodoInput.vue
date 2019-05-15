@@ -24,7 +24,7 @@
 import Modal from './common/Modal.vue'
 
 export default {
-  data : function() {
+  data() {
     return {
       newTodoItem: "",
       showModal : false
@@ -45,7 +45,7 @@ export default {
     }
   },
   components : {
-    Modal : Modal
+    Modal
   }
 }
 </script>
