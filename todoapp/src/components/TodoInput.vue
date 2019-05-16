@@ -31,10 +31,12 @@ export default {
     }
   },
   methods: {
-    addTodo : function() {
+    addTodo(){
       if (this.newTodoItem !== ''){
         // this.$emit('이벤트 이름', 인지1, 인자2....)
-        this.$emit('addItem', this.newTodoItem)
+        // this.$emit('addItem', this.newTodoItem)
+        const text = this.newTodoItem.trim()
+        this.$store.commit('addOneItem', this.newTodoItem)
         this.clearInput()
       } else {
         this.showModal = !this.showModal
