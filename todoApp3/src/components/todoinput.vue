@@ -17,9 +17,7 @@ export default {
   methods: {
     addTodo(){
       if (this.newTodoItem !== ''){
-        let obj = {completed : false, item : this.newTodoItem}
-        localStorage.setItem(this.newTodoItem, JSON.stringify(obj))
-        // JSON.stringify 객체를 문자화 시키는것
+        this.$emit('addItem',this.newTodoItem)
         this.clearInput()
       }
     },
