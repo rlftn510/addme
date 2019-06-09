@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div>
+    <p>도시이름 : <span id="cityName"></span></p>
+    <p>현재온도 : <span id="curTemp"></span></p>
+    <p>현재습도 : <span id="curWet"></span></p>
+    <p>현재날씨 : <span id="curWeather"></span></p>
+    <p>날씨상세설명 : <span id="detailWeather"></span></p>
+    <p>날씨 이미지 : <img src="" alt="날씨" id="weatherIcon"></p>
+    <p>구름 : <span id="curCloud"></span></p>
+  </div>
+  <div>
+    <h3>월</h3>
+    <p>온도: <span></span></p>
+  </div>
+  <div>
+    <h3>화</h3>
+    <p>온도: <span></span></p>
+  </div>
+  <script>
+    axios.get('http://api.openweathermap.org/data/2.5/forecast?q=Seoul&lang=zh_cn&APPID=c102a437a9d8f986c74e57cd6a2dbce1').then(function(res){
+      console.log(res)
+      var timea12 = res.data.list[0]
+      console.log(timea12.main.temp - 273.15)
+      console.log(timea12.dt_txt)
+      console.log(timea12.weather[0].main)
+
+      console.log(res.data.list[1].main.temp - 273.15)
+      console.log(res.data.list[1].dt_txt)
+      console.log(res.data.list[1].weather[0].main)
+
+      console.log(res.data.list[2].main.temp - 273.15)
+      console.log(res.data.list[2].dt_txt)
+      console.log(res.data.list[2].weather[0].main)
+    })
+  </script>  
+</body>
+
+</html>
+
+const seoul = document.getElementById('todayWeather')
+const cityName = document.getElementById('cityName')
+const curTemp = document.getElementById('curTemp')
+const curWet = document.getElementById('curWet')
+const curWeather = document.getElementById('curWeather')
+const detailWeather = document.getElementById('detailWeather')
+const curCloud = document.getElementById('curCloud')
+const weatherIcon = document.getElementById('weatherIcon')
+
+axios.get('http://api.openweathermap.org/data/2.5/weather?q=Chuncheon&appid=c102a437a9d8f986c74e57cd6a2dbce1').then(function(res){
+  console.log(res)
+  cityName.innerHTML =  res.data.name;
+  curTemp.innerHTML = Math.round(res.data.main.temp - 273.15);
+  curWet.innerHTML = res.data.main.humidity
+  curWeather.innerHTML = res.data.weather[0].main
+  detailWeather.innerHTML = res.data.weather[0].description;
+  curCloud.innerHTML = (res.data.clouds.all) +"%"
+  const imgURL = "http://openweathermap.org/img/w/" + res.data.weather[0].icon + ".png"
+  $(weatherIcon).attr('src', imgURL)
+
+
+  var templateStr = loadTemplate('result');
+    // 문자열을 원하는 데이터로 치환한다
+  var result = replaceTemplate(templateStr, res.data);
+    // DOM에 추가
+  console.log(result)
+  document.getElementById('result').innerHTML = result;
+  /*
+  * 템플릿을 불러온다
+  */
+  function loadTemplate(id) {
+    return document.getElementById(id).innerHTML;
+  }
+  /*
+  * 템플릿의 문자열을 치환한다
+  */
+  function replaceTemplate(templateStr, res) {
+    var result = templateStr;
+    console.log(result) 
+    console.log(res)
+    for (var key in res.data) {
+      result = result.replace('{' + res + '}', res[key]);
+      console.log(res.data)
+      console.log(res[key])
+    }
+    return console.log(result);
+  }
+})
+

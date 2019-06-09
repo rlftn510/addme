@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>weatherapp</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
   <body>
     <div id="app"></div>
@@ -21,73 +22,88 @@
       <p>구름 : <span id="curCloud"></span></p>
     </div>
     <span id="todayWeather"></span>
+
+    <div id=result >
+        {name}
+        {cod}
+        {main}
+    </div>
     <script>
-      const seoul = document.getElementById('todayWeather')
-      const cityName = document.getElementById('cityName')
-      const curTemp = document.getElementById('curTemp')
-      const curWet = document.getElementById('curWet')
-      const curWeather = document.getElementById('curWeather')
-      const detailWeather = document.getElementById('detailWeather')
-      const curCloud = document.getElementById('curCloud')
-      const weatherIcon = document.getElementById('weatherIcon')
-
-      const apiURI = "http://api.openweathermap.org/data/2.5/weather?q=Chuncheon&appid=c102a437a9d8f986c74e57cd6a2dbce1";
-        $.ajax({
-            url: apiURI,
-            dataType: "json",
-            type: "GET",
-            async: "false",
-            success: function(data) {
-                cityName.innerHTML =  data.name;
-                curTemp.innerHTML = Math.round(data.main.temp - 273.15);
-                curWet.innerHTML = data.main.humidity
-                curWeather.innerHTML = data.weather[0].main
-                detailWeather.innerHTML = data.weather[0].description;
-                curCloud.innerHTML = (data.clouds.all) +"%"
-                // weatherIcon.innerHTML = data.weather[0].icon;
-
-                var imgURL = "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png"
-                $(weatherIcon).attr('src', imgURL)
-                console.log(data);
-                console.log("현재온도 : "+ (data.main.temp- 273.15) );
-                console.log("현재습도 : "+ data.main.humidity);
-                console.log("날씨 : "+ data.weather[0].main );
-                console.log("상세날씨설명 : "+ data.weather[0].description );
-                console.log("날씨 이미지 : "+ data.weather[0].icon );
-                console.log("바람   : "+ data.wind.speed );
-                console.log("나라   : "+ data.sys.country );
-                console.log("도시이름  : "+ data.name );
-                console.log("구름  : "+ (data.clouds.all) +"%" );                 
-            }
-        })
-
-    
-    </script>
-    <!-- <script>
-      function parseWeather(){
-        loadJSON(function(dataonse){
-          var jsonData = JSON.parse(dataonse);
-          document.getElementById("todayWeather").innerHTML = jsonData['list'][0]['weather'][0]["main"]
-        })
-      }
-      function loadJSON(callback)
-      {
-        var url = "api.openweathermap.org/data/2.5/forecast?id=524901&APPID=c102a437a9d8f986c74e57cd6a2dbce1"
-        var request = new XMLHttpRequest();
-        request.overrideMimeType("application/json");
-        request.open('GET', url, true);
-        request.onreadystatechange = function(){
-          if(request.readyState == 4 && request.status =="200") {
-            callback(request.dataonseText);
-          }
+      axios.get('http://api.openweathermap.org/data/2.5/weather?q=Chuncheon&appid=c102a437a9d8f986c74e57cd6a2dbce1').then(function(res){
+        console.log(res)
+        var templateStr = loadTemplate('result');
+          // 문자열을 원하는 데이터로 치환한다
+        var result = replaceTemplate(templateStr, res.data);
+          // DOM에 추가
+        console.log(result)
+        document.getElementById('result').innerHTML = result;
+        /*
+        * 템플릿을 불러온다
+        */
+        function loadTemplate(id) {
+          return document.getElementById(id).innerHTML;
         }
-        request.send(null)
-      }
+        /*
+        * 템플릿의 문자열을 치환한다
+        */
+        function replaceTemplate(templateStr, res) {
+          var result = templateStr;
+          console.log(result) 
+          console.log(res)
+          for (let key in res) {
+            result = result.replace('{' + key + '}', res[key]);
+            console.log(typeof res[key])
+            // if( == Object){
+            //   console.log('객체')
+            // }
+          }
+          return result
+          // console.log(result)
+        }
+      })
+      
 
-      window.onload = function(){
-        parseWeather()
-      }
-      console.log('asd')
-    </script> -->
+
+
+
+
+
+      // const apiURI = "http://api.openweathermap.org/data/2.5/weather?q=Chuncheon&appid=c102a437a9d8f986c74e57cd6a2dbce1";
+      //   $.ajax({
+      //       url: apiURI,
+      //       dataType: "json",
+      //       type: "GET",
+      //       async: "false",
+      //       success: function(data) {
+      //         console.log(data);
+      //           cityName.innerHTML =  data.name;
+      //           curTemp.innerHTML = Math.round(data.main.temp - 273.15);
+      //           curWet.innerHTML = data.main.humidity
+      //           curWeather.innerHTML = data.weather[0].main
+      //           detailWeather.innerHTML = data.weather[0].description;
+      //           curCloud.innerHTML = (data.clouds.all) +"%"
+
+      //           var imgURL = "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png"
+      //           $(weatherIcon).attr('src', imgURL)
+      //           console.log(data);
+      //           console.log("현재온도 : "+ (data.main.temp- 273.15) );
+      //           console.log("현재습도 : "+ data.main.humidity);
+      //           console.log("날씨 : "+ data.weather[0].main );
+      //           console.log("상세날씨설명 : "+ data.weather[0].description );
+      //           console.log("날씨 이미지 : "+ data.weather[0].icon );
+      //           console.log("바람   : "+ data.wind.speed );
+      //           console.log("나라   : "+ data.sys.country );
+      //           console.log("도시이름  : "+ data.name );
+      //           console.log("구름  : "+ (data.clouds.all) +"%" );          
+
+                
+
+
+      //       }
+      //   })
+
+     
+    </script>
+    
   </body>
 </html>
