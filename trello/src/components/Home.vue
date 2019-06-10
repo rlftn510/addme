@@ -5,9 +5,10 @@
       Board List : 
       <div v-if="loading">Loading...</div>
       <div v-else>
-        Api result : {{apiRes}}
+        <div v-for="b in boards" :key="b.id">
+          {{ b }}
+        </div>
       </div>
-      <div v-if="error"><pre>{{error}}</pre></div>
       <ul>
         <li>
           <router-link to="/b/1">board 1</router-link>
@@ -21,13 +22,14 @@
 </template>
 
 <script>
-import axios from 'axios'
+import {board} from '../api/index.js'
+
 
 export default {
   data() {
     return {
       loading : false,
-      apiRes : '',
+      boards : [],
       error : ''
     }
   },
@@ -37,27 +39,15 @@ export default {
   methods: {
     fetchData(){
       this.loading = true;
-      axios.get('http://localhost:3000/health').then(res => {
-        this.apiRes = res.data
-      }).catch(res => {
-        this.error = res.response.data
-      }).finally(() => {
+      // axios의 메소드인 then을 쓸수 있는것은 import 한 board 에 
+      //board.fetch 가 axios 를 return 해주기 때문
+      board.fetch().then(data => {  
+        this.boards = data
+      })
+      .finally(() => {
         this.loading = false
       })
-      // const req = new XMLHttpRequest()
-
-      // req.open('GET', 'http://localhost:3000/health')
-
-      // req.send() // 클라이언트 서버에서 백엔드 서버로 요청
-
-      // req.addEventListener('load', () => {
-      //   this.loading = false;
-      //   this.apiRes = {
-      //     status : req.status,
-      //     statusText : req.statusText,
-      //     response : JSON.parse(req.response)
-      //   }
-      // })
+     
     }
   },
 }
