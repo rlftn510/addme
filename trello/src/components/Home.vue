@@ -13,19 +13,24 @@
         </a>
       </div>
     </div>
+    <AddBoard v-if="isAddBoard" @close="isAddBoard=false" @submit="onAddBoard"/>
   </div>
 </template>
 
 <script>
 import {board} from '../api/index.js'
-
+import AddBoard from './AddBoard.vue'
 
 export default {
+  components : {
+    AddBoard
+  },
   data() {
     return {
       loading : false,
       boards : [],
-      error : ''
+      error : '',
+      isAddBoard : false
     }
   },
   created() {
@@ -41,15 +46,20 @@ export default {
       this.loading = true;
       // axios의 메소드인 then을 쓸수 있는것은 import 한 board 에 
       //board.fetch 가 axios 를 return 해주기 때문
-      board.fetch().then(data => {  
-        this.boards = data.list
-      })
-      .finally(() => {
-        this.loading = false
-      })
+      board.fetch()
+        .then(data => {  
+          this.boards = data.list
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     addBoard(){
-      console.log('addBoard(')
+      this.isAddBoard = true
+    },
+    onAddBoard(title){
+      board.create(title)
+        .then(() => this.fetchData())
     }
   },
 }
