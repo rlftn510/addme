@@ -9,7 +9,7 @@
       <div>
         <label for="password">Passwrod</label>
         <input class="form-control" type="password" 
-        v-model="password" placeholder="123123" autocomplete="off"/>
+        v-model="password" placeholder="123123"/>
       </div>
       <button  class="btn" :class="{'btn-success': !invalidForm}" type="submit" :disabled="invalidForm">LogIn</button>
     </form>
