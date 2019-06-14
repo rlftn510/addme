@@ -4,9 +4,12 @@ import router from '../router'
 
 const DOMAIN = 'http://localhost:3000'
 const UNAUTHORIZED = 401
+
 const onUnauthorized = () => {
   router.push(`/login?rPath=${encodeURIComponent(location.pathname)}`)
 }
+
+
 
 const request = (method, url, data) => {
   return axios({
@@ -25,8 +28,6 @@ export const setAuthInHeader = token => {
   axios.defaults.headers.common['Authorization'] = token ? `Bearer ${token}` : null;
 }
 
-const {token} = localStorage
-if (token) setAuthInHeader(token)
 
 export const board = {
   fetch(){
