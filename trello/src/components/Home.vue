@@ -13,15 +13,14 @@
         </a>
       </div>
     </div>
-    <AddBoard v-if="isAddBoard" @close="isAddBoard=false" @submit="onAddBoard"/>
+    <AddBoard v-if="isAddBoard"/>
   </div>
 </template>
 
 <script>
 import {board} from '../api/index.js'
 import AddBoard from './AddBoard.vue'
-import {mapState, mapMutations} from 'vuex'
-
+import {mapState, mapMutations, mapActions} from 'vuex'
 export default {
   components : {
     AddBoard
@@ -29,15 +28,14 @@ export default {
   data() {
     return {
       loading : false,
-      boards : [],
       error : '',
-      // isAddBoard : false
     }
   },
   computed: {
-      ...mapState([
-      'isAddBoard'
-    ])
+      ...mapState({
+        isAddBoard : 'isAddBoard',
+        boards : 'boards'
+      })
   },
   created() {
     this.fetchData()
@@ -51,22 +49,16 @@ export default {
     ...mapMutations([
       'SET_IS_ADD_BOARD'
     ]),
+    ...mapActions([
+      'FETCH_BOARDS'
+    ]),
     fetchData(){
       this.loading = true;
-      // axios의 메소드인 then을 쓸수 있는것은 import 한 board 에 
-      //board.fetch 가 axios 를 return 해주기 때문
-      board.fetch()
-        .then(data => {  
-          this.boards = data.list;
-        })
-        .finally(() => {
-          this.loading = false
-        })
+      this.FETCH_BOARDS().finally(_=> {
+        this.loading = false
+      })
     },
-    onAddBoard(){
-      this.fetchData()
-    }
-  },
+  }
 }
 </script>
 

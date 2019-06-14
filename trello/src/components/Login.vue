@@ -19,8 +19,6 @@
 
 <script>
 import {auth, setAuthInHeader} from '../api'
-
-
 export default {
   data() {
     return {
