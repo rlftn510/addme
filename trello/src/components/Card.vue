@@ -1,45 +1,46 @@
 <template>
-  <modal>
-    Card
-    <div v-if="loading">loading Card....</div>
-    <div v-else>
-      <p>cid : {{cid}}</p>
+  <modal class="modal-card">
+    <div slot="header" class="modal-card-header">
+      <div class="modal-card-header-title">
+        <input class="form-control" type="text" :value="card.title" readonly>
+      </div>
+      <a class="modal-close-btn" href="" @click.prevent="onClose">&times;</a>
     </div>
-  </modal>
+    <div slot="body">
+      <h3>Description</h3>
+      <textarea  class="form-control" cols="30" rows="3" placeholder="Add a more detailed description..."
+        readonly v-model="card.description"></textarea>
+    </div>
+    <div slot="footer"></div>
+  </modal>  
 </template>
 
 <script>
 import Modal from './Modal'
+import {mapActions, mapState} from 'vuex'
 
 export default {
   components : {
     Modal
   },
-  data() {
-    return {
-      cid : 0,
-      loading : false
-    }
+  computed: {
+    ...mapState({
+      card : 'card',
+      board : 'board'
+    })
   },
-  watch: {
-    $route : {
-      handler : 'fetchData',
-      immediate : true
-    }
+  created() {
+    const id = this.$route.params.cid
+    this.FETCH_CARD({id})
   },
-  // created() {
-  //   this.fetchData()
-  //   console.log(this.$route)
-  // },
   methods: {
-    fetchData(){
-      this.loading = true
-      setTimeout(() => {
-        this.cid = this.$route.params.cid
-        this.loading = false
-      }, 500)
-    }
-  },
+   ...mapActions([
+     'FETCH_CARD'
+   ]),
+   onClose() {
+     this.$router.push(`/b/${this.board.id}`)
+   }
+  }
 }
 </script>
 
