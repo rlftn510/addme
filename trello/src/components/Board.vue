@@ -58,6 +58,7 @@ export default {
     },
     setCardDraggable() {
       if(this.cDragger) this.cDragger.destroy()
+      
       this.cDragger = dragger.init(Array.from(this.$el.querySelectorAll('.card-list')))
       this.cDragger.on('drop', (el, wrapper, target, siblings) => {
         const targetCard = {

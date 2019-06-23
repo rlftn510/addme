@@ -3,7 +3,7 @@ import 'dragula/dist/dragula.css'
 
 const dragger = {
   init(container){
-    return dragular([...container])
+    return dragula([...container])
   },
 
   siblings({el, wrapper, candidates, type}) {
