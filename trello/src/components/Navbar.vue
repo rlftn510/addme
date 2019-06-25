@@ -44,7 +44,6 @@ export default {
       const container = document.querySelector('.container')
       if (body) body.style.backgroundColor = this.bodyColor
       if (container) container.style.backgroundColor = this.bodyColor
-
     }
   },
 }
