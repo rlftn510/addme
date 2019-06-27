@@ -6,6 +6,7 @@
     </div>
     <ul class="menu-list">
       <li><a href="" @click.prevent="onDeleteBoard">Delete Board</a></li>
+      <li></li>
     </ul>
   </div>
 </template>
