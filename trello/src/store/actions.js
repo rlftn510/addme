@@ -54,6 +54,10 @@ const actions = {
   UPDATE_LIST({dispatch, state}, {title, id, pos}){
     return api.list.update(id, {title, pos})
     .then(() => dispatch('FETCH_BOARD', {id : state.board.id}))
+  },
+  DELETE_LIST({dispatch, state}, {id}) {
+    return api.list.destroy(id)
+      .then(() => dispatch('FETCH_BOARD', {id : state.board.id}))
   }
 }
 
