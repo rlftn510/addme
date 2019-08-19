@@ -1,6 +1,6 @@
 <template>
   <header>
-    <h1>TODO prepare</h1>
+    <h1>Gilsu TODO List</h1>
   </header>
 </template>
 

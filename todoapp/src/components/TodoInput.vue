@@ -16,6 +16,9 @@
         <i class="fas closeModalBtn fa-times" @click="showModal = false"></i>
       </h3>
       <div slot="body">asd</div>
+      <div slot="footer">
+        
+      </div>
     </Modal>
   </div>
 </template>
